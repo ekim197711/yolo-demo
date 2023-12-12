@@ -1,16 +1,19 @@
-# This is a sample Python script.
+from ultralytics import YOLO
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Create a new YOLO model from scratch
+model = YOLO('yolov8n.yaml')
 
+# Load a pretrained YOLO model (recommended for training)
+model = YOLO('yolov8n.pt')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Train the model using the 'coco128.yaml' dataset for 3 epochs
+results = model.train(data='coco128.yaml', epochs=3)
 
+# Evaluate the model's performance on the validation set
+results = model.val()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Perform object detection on an image using the model
+results = model('https://ultralytics.com/images/bus.jpg')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Export the model to ONNX format
+success = model.export(format='onnx')
